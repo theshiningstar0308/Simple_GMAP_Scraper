@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Google Maps Data Scrap</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <style type="text/css">
+        	/* Absolute Center Spinner */
+.loading {
+  position: fixed;
+  z-index: 999;
+  height: 2em;
+  width: 2em;
+  overflow: show;
+  margin: auto;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+/* Transparent Overlay */
+.loading:before {
+  content: '';
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+    background: radial-gradient(rgba(20, 20, 20,0.8), rgba(0, 0, 0, 0.8));
+
+  background: -webkit-radial-gradient(rgba(20, 20, 20,.8), rgba(0, 0, 0,.8));
+}
+
+/* :not(:required) hides these rules from IE9 and below */
+.loading:not(:required) {
+  /* hide "loading..." text */
+  font: 0/0 a;
+  color: transparent;
+  text-shadow: none;
+  background-color: transparent;
+  border: 0;
+}
+
+.loading:not(:required):after {
+  content: '';
+  display: block;
+  font-size: 10px;
+  width: 1em;
+  height: 1em;
+  margin-top: -0.5em;
+  -webkit-animation: spinner 150ms infinite linear;
+  -moz-animation: spinner 150ms infinite linear;
+  -ms-animation: spinner 150ms infinite linear;
+  -o-animation: spinner 150ms infinite linear;
+  animation: spinner 150ms infinite linear;
+  border-radius: 0.5em;
+  -webkit-box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1.1em 0 0, rgba(255,255,255, 0.75) 0 1.5em 0 0, rgba(255,255,255, 0.75) -1.1em 1.1em 0 0, rgba(255,255,255, 0.75) -1.5em 0 0 0, rgba(255,255,255, 0.75) -1.1em -1.1em 0 0, rgba(255,255,255, 0.75) 0 -1.5em 0 0, rgba(255,255,255, 0.75) 1.1em -1.1em 0 0;
+box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1.1em 0 0, rgba(255,255,255, 0.75) 0 1.5em 0 0, rgba(255,255,255, 0.75) -1.1em 1.1em 0 0, rgba(255,255,255, 0.75) -1.5em 0 0 0, rgba(255,255,255, 0.75) -1.1em -1.1em 0 0, rgba(255,255,255, 0.75) 0 -1.5em 0 0, rgba(255,255,255, 0.75) 1.1em -1.1em 0 0;
+}
+
+/* Animation */
+
+@-webkit-keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@-moz-keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@-o-keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+        </style>
+    </head>
+    <body>
+    	<div id="loading" class=""></div>
+		<div class="container">
+		<h2>Enter Google Maps Urls</h2>
+
+		<div class="form-group">
+		      <label for="name">Enter URL:</label>
+				<input type="text" class="form-control" id="name" name="name" placeholder="<---Enter Url--->">
+		</div>
+			<button type="submit" id="submit" class="btn btn-success center-block">Submit</button>
+			<div id="demo"></div>
+		</div>
+    </body>
+
+    <script type="text/javascript">
+    	var sb = document.getElementById("submit");
+    	var nm = document.getElementById("name");
+		var demo = document.getElementById("demo");
+		var current_page = 2;
+    	sb.addEventListener("click", function(){
+    		var element = document.getElementById("loading");
+    		element.classList.add("loading");
+
+  			var query = nm.value;
+  			if(query.slice(0,4) === 'http'){
+				var loc = query.split('/@')
+  				var query = query.split('search/')
+				if(loc.length>1){
+					loc = loc[1].split('/')[0];
+				}else{
+					loc = '';
+				}
+				
+  				console.log(query.length);
+  				if(query.length>1){
+  					query = query[1].split('/')[0];
+  					console.log(query);
+		  			var xhttp = new XMLHttpRequest();
+				  	xhttp.onreadystatechange = function() {
+					    if (this.readyState == 4 && this.status == 200) {
+					      var res = this.responseText;
+						  console.log(res);
+						  
+					      if(res.slice(1,3) === 'br'){
+							var download_url = res.split('__')[1];
+						    res = res.split('__')[2];
+  							element.classList.remove("loading");
+  							nm.value = '';
+							if(res.charAt(res.length-1) == ' '){
+								demo.innerHTML = res+current_page+'</button>';
+								current_page+=1;
+							}else{
+								demo.innerHTML = '';
+							}
+							window.location.href = download_url;
+  							//window.location.href = res;
+					      }else{
+					      	element.classList.remove("loading");
+					      	nm.value = '';
+					      	alert(res);
+					      }
+					    }
+				  	};
+				  xhttp.open("GET", "data.php?query="+query+"&loc="+loc, true);
+				  xhttp.send();
+  				}else{
+  					element.classList.remove("loading");
+  					nm.value = '';
+  					alert('Provide Valid Url!!');	
+  				}
+  			}else{
+  				element.classList.remove("loading");
+  				alert('Provide Valid Url!!');
+  			}
+		});
+		
+	function myFunction() {
+	  var token = document.getElementById("token").value;
+		var element = document.getElementById("loading");
+    	element.classList.add("loading");
+	 var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+		  var res = this.responseText;
+		  console.log(res);
+		  
+		  if(res.slice(1,3) === 'br'){
+			var download_url = res.split('__')[1];
+		    res = res.split('__')[2];
+			element.classList.remove("loading");
+			nm.value = '';
+			if(res.charAt(res.length-1) == ' '){
+				demo.innerHTML = res+current_page+'</button>';
+				current_page+=1;
+			}else{
+				demo.innerHTML = '';
+			}
+			window.location.href = download_url;
+			//window.location.href = res;
+		  }else{
+			element.classList.remove("loading");
+			nm.value = '';
+			alert(res);
+		  }
+		}
+	};
+  xhttp.open("GET", "data.php?token="+token, true);
+  xhttp.send();
+	}
+    </script>
+</html>
